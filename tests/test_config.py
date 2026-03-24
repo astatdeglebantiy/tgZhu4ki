@@ -1,14 +1,7 @@
-import sys
 import tempfile
-import types
 import unittest
 from datetime import datetime
 from pathlib import Path
-
-# classes.py depends on pyrogram at import time; provide lightweight stub for tests.
-pyrogram_stub = types.ModuleType('pyrogram')
-pyrogram_stub.Client = object
-sys.modules.setdefault('pyrogram', pyrogram_stub)
 
 import config
 from classes import Squad, SquadMember, SquadMemberStatus, UserInfo

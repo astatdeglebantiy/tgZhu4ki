@@ -2,9 +2,8 @@
 
 import asyncio
 
-import pyrogram
+from typing import Any
 
-import broadcast_message
 import random
 from asyncio import Task
 from collections.abc import Callable, Coroutine
@@ -237,20 +236,24 @@ class BasicEvent:
         self.end_message = end_message
         self.start_message_photo = start_message_photo
         self.end_message_photo = end_message_photo
-    async def start(self, status: Status, app: pyrogram.Client) -> Task:
+    async def start(self, status: Status, app: Any) -> Task:
         async def task():
             status.update(self.new_status)
             if self.start_message:
                 if self.start_message_photo:
-                    await broadcast_message.broadcast_message(app, self.start_message, self.start_message_photo)
+                    from broadcast_message import broadcast_message
+                    await broadcast_message(app, self.start_message, self.start_message_photo)
                 else:
-                    await broadcast_message.broadcast_message(app, self.start_message)
+                    from broadcast_message import broadcast_message
+                    await broadcast_message(app, self.start_message)
             await asyncio.sleep(self.duration)
             if self.end_message:
                 if self.end_message_photo:
-                    await broadcast_message.broadcast_message(app, self.end_message, self.end_message_photo)
+                    from broadcast_message import broadcast_message
+                    await broadcast_message(app, self.end_message, self.end_message_photo)
                 else:
-                    await broadcast_message.broadcast_message(app, self.end_message)
+                    from broadcast_message import broadcast_message
+                    await broadcast_message(app, self.end_message)
             status.update(Status())
             return True
         return asyncio.create_task(coro=task(), name=f'event:{self.name}')
