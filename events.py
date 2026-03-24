@@ -2,7 +2,8 @@
 
 import random
 from datetime import timedelta
-from new.classes import Status, BasicEvent
+
+from classes import BasicEvent, Status
 
 
 # --- events ---
@@ -15,15 +16,18 @@ invasion_of_bugs = BasicEvent(
     start_message_photo='https://imgur.com/k2O1o1B',
     end_message='🚨🚨🚨🚨🚨\n\n\nПУСТОЙ БОБОФОН🫘🫘👽 УЖЕ ЗА ДВЕРЬЮ👹👹\n\nБЕШАСТИ: Нашествие жуков⚠️⚠️ завершены. Таймауты возвращены в обычный режим.\n\n\n🚨🚨🚨🚨🚨',
 )
+
 gas_attack = BasicEvent(
     name='gas_attack',
     new_status=Status(
-        rate_limit=2, window_duration=timedelta(minutes=15), count=-1,
+        rate_limit=2,
+        window_duration=timedelta(minutes=15),
+        count=-1,
         send_message=lambda _from, to, count, bug_declination: random.choice([
             f'@{_from} отдихлофосил @{to} (всего ×{count} {bug_declination(count)})',
         ]),
         end_window_error_message=lambda hours, minutes, seconds:
-            f'БЕШАСТИ🔮🔮\n⚠️⚠️ У Вас кончился ГАЗ❗️❗️\n\nВы сможете отдихлофосить🦨💨 снова через {hours} ч. {minutes} мин. {seconds} сек. 🧴🧴',
+        f'БЕШАСТИ🔮🔮\n⚠️⚠️ У Вас кончился ГАЗ❗️❗️\n\nВы сможете отдихлофосить🦨💨 снова через {hours} ч. {minutes} мин. {seconds} сек. 🧴🧴',
         error_message=lambda: 'БЕШАСТИ ❗️❗️❗️ Не удалось отдихлофостить🦨💨. Попробуйте снова.',
     ),
     duration=2 * 60 * 60,
